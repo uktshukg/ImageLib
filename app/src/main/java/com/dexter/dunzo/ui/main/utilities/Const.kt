@@ -1,4 +1,4 @@
-package com.dexter.dunzo.ui.main.api
+package com.dexter.dunzo.ui.main.utilities
 
 object Const {
 

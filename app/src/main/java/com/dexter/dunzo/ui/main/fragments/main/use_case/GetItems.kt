@@ -1,6 +1,8 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.fragments.main.use_case
 
-import com.dexter.dunzo.ui.main.api.ApiClient
+import com.dexter.dunzo.ui.main.api.ApiConverter
+import com.dexter.dunzo.ui.main.fragments.main.model.LocalFeedDetails
+import com.dexter.dunzo.ui.main.fragments.main.model.LocalPhoto
 import com.dexter.dunzo.ui.main.api.IApiClient
 import io.reactivex.Single
 import javax.inject.Inject
@@ -11,9 +13,12 @@ class GetItems @Inject constructor(private val apiClientImpl: IApiClient) {
         return apiClientImpl.getItems(  term,   paginationCount).map {
             val list = ArrayList<LocalPhoto>()
             it.photos.photo.forEach {
-                ApiConvertor.LOCAL_PHOTO.convert(it )?.let { it1 -> list.add(it1) }
+                ApiConverter.LOCAL_PHOTO.convert(it )?.let { it1 -> list.add(it1) }
             }
-            return@map LocalFeedDetails(list)
+            return@map LocalFeedDetails(
+                list,
+                it.photos.total
+            )
         }
     }
 }

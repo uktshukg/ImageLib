@@ -1,9 +1,10 @@
-package com.dexter.dunzo
+package com.dexter.dunzo.ui.main.activities.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.dexter.dunzo.ui.main.MainFragment
+import com.dexter.dunzo.R
+import com.dexter.dunzo.ui.main.fragments.main.MainFragment
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

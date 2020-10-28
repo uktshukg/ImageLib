@@ -1,5 +1,8 @@
 package com.dexter.dunzo.ui.main
 
+import com.dexter.dunzo.ui.main.app_modules.ActivityBindingModule
+import com.dexter.dunzo.ui.main.app_modules.AppModule
+import com.dexter.dunzo.ui.main.app_modules.NetworkModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

@@ -1,4 +1,4 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.fragments.main
 
 import android.view.View
 import android.widget.ImageView
@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dexter.dunzo.R
+import com.dexter.dunzo.ui.main.fragments.main.model.LocalPhoto
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var photoIV: ImageView = itemView.findViewById<ImageView>(R.id.photo)

@@ -1,4 +1,4 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.fragments.main.model
 
 data class LocalPhoto( val farm: Int,
                        val id: String,

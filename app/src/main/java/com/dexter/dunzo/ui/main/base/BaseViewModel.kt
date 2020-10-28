@@ -1,4 +1,4 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.base
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable

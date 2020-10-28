@@ -1,4 +1,4 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.api.models
 
 
 data class FeedDetails(

@@ -1,7 +1,6 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.fragments.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dexter.dunzo.R
-import com.dexter.dunzo.ui.main.api.Const
+import com.dexter.dunzo.ui.main.utilities.Const
+import com.dexter.dunzo.ui.main.base.BaseFragment
 import javax.inject.Inject
 
 
 class MainFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() =
+            MainFragment()
     }
 
     private lateinit var model: MainModel
@@ -49,9 +50,8 @@ class MainFragment : BaseFragment() {
                 val totalItemCount: Int = layoutManager.itemCount
                 val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
                 model.let {
-                    Log.e("utkarsh","inside "+it.isLoading +" last page "+it.isLastPage+"  visibleItemCount "+visibleItemCount+" totalItemCount "+totalItemCount+" firstVisibleItemPosition "+firstVisibleItemPosition)
                     if (!it.isLoading && !it.isLastPage) {
-                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount-Const.PRECACHE_SIZE
+                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount- Const.PRECACHE_SIZE
                             && firstVisibleItemPosition >= 0
                             && totalItemCount >= Const.PAGE_SIZE
                         ) {
@@ -63,26 +63,8 @@ class MainFragment : BaseFragment() {
         })
         viewModel._list.observe(viewLifecycleOwner, Observer { it    ->
             this.model = it
-            it.diffInfo?.let {
-                when (it.range) {
-                    DiffFinder.Range.Same -> {
-                    }
-                    DiffFinder.Range.Removed -> {
-                        Log.e("utkarsh","inside removed "+model.itemsList.size +"  index "+it.index+" itemcount "+it.itemCount)
-                        adapter.setPhotos(model.itemsList)
-                        adapter.notifyItemRangeRemoved(it.index,it.itemCount)
-                    }
-                    DiffFinder.Range.Added -> {
-                        Log.e("utkarsh","inside added "+model.itemsList.size +"  index "+it.index+"it.itemCount "+it.itemCount)
-                        adapter.setPhotos(model.itemsList)
-                        adapter.notifyItemRangeInserted(it.index,it.itemCount)
-                    }
-                    DiffFinder.Range.Complex -> {
-                        adapter.setPhotos(model.itemsList)
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-            }
+            adapter.setPhotos(model.itemsList)
+            adapter.notifyDataSetChanged()
         })
         view.findViewById<EditText>(R.id.edit_query).addTextChangedListener {
             it?.let {

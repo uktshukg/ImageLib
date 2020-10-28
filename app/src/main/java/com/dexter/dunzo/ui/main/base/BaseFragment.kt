@@ -1,4 +1,4 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.base
 
 import android.app.Activity
 import android.content.Context

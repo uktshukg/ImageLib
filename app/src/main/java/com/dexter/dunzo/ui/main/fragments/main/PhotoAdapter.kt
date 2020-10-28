@@ -1,15 +1,20 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.fragments.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dexter.dunzo.R
+import com.dexter.dunzo.ui.main.fragments.main.model.LocalPhoto
 
 class PhotoAdapter: RecyclerView.Adapter<PhotoViewHolder>() {
     var photos = ArrayList<LocalPhoto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        return PhotoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_photo_adapter,parent,false))
+        return PhotoViewHolder(
+            LayoutInflater.from(
+                parent.context
+            ).inflate(R.layout.item_photo_adapter, parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -26,6 +31,7 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoViewHolder>() {
     }
 
     override fun getItemId(position: Int): Long {
+        // assuming id unique for all
         return photos[position].id.toLong()
     }
 }

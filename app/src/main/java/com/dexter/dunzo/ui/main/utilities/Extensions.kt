@@ -1,4 +1,4 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.utilities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

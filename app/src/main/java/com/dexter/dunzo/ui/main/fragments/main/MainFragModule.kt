@@ -1,10 +1,10 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.fragments.main
 
 import androidx.lifecycle.ViewModel
-import com.dexter.baseproject.scopes.AppScope
 import com.dexter.baseproject.scopes.FragmentScope
 import com.dexter.dunzo.ui.main.api.ApiClientImpl
 import com.dexter.dunzo.ui.main.api.IApiClient
+import com.dexter.dunzo.ui.main.utilities.createPresenter
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

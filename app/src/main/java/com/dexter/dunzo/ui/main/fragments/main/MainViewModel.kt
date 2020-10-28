@@ -1,9 +1,11 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.fragments.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.dexter.dunzo.ui.main.api.Const
+import com.dexter.dunzo.ui.main.utilities.Const
+import com.dexter.dunzo.ui.main.base.BaseViewModel
+import com.dexter.dunzo.ui.main.fragments.main.model.LocalFeedDetails
+import com.dexter.dunzo.ui.main.fragments.main.use_case.GetItems
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -17,11 +19,11 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel(compositeDisposable) {
 
 
-    private val mutablelIst = MutableLiveData<MainModel>()
+    private val mutablelist = MutableLiveData<MainModel>()
 
     private val wordSubject: PublishSubject<String> = PublishSubject.create()
     val _list: LiveData<MainModel>
-        get() = mutablelIst
+        get() = mutablelist
 
     init {
         compositeDisposable.add(wordSubject.throttleLast(800, TimeUnit.MILLISECONDS)
@@ -30,20 +32,19 @@ class MainViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io()).flatMapSingle {
                 model.searchTerm = it
-                model.paginationCount = Const.INITIAL_PAGE_COUNT
+                model.paginationCount =
+                    Const.INITIAL_PAGE_COUNT
                 model.isLoading = true
                 model.isLastPage = false
                 getItems.getItems(it, model.paginationCount)
             }.subscribe { t1: LocalFeedDetails? ->
                 t1?.let {
                     model.isLoading = false
-                    if (t1.photos.size < Const.PERPAGE_COUNT) {
+                    model.itemsList = it.photos
+                    if (model.itemsList.size == it.total.toInt()) {
                         model.isLastPage = true
                     }
-                    val diffInfo = DiffFinder.compare(model.itemsList, ArrayList(it.photos))
-                    model.diffInfo = diffInfo
-                    model.itemsList = it.photos
-                    mutablelIst.postValue(model)
+                    mutablelist.postValue(model)
                 }
             })
     }
@@ -61,14 +62,12 @@ class MainViewModel @Inject constructor(
             .subscribe { t1: LocalFeedDetails?, t2: Throwable? ->
                 t1?.let {
                     model.isLoading = false
-                    if (it.photos.size < Const.PERPAGE_COUNT) {
-                        model.isLastPage = true
-                    }
                     if (it.photos.isEmpty().not()) {
-                        val oldListSize = model.itemsList.size
-                        model.diffInfo = DiffFinder.DiffInfo(DiffFinder.Range.Added, oldListSize,it.photos.size)
                         model.itemsList.addAll(it.photos)
-                        mutablelIst.postValue(model)
+                        if (model.itemsList.size == it.total.toInt()) {
+                            model.isLastPage = true
+                        }
+                        mutablelist.postValue(model)
                     }
                 }
 

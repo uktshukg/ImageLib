@@ -1,4 +1,4 @@
-package com.dexter.dunzo.ui.main
+package com.dexter.dunzo.ui.main.app_modules
 
 import com.dexter.dunzo.ui.main.api.ApiClient
 import dagger.Module
