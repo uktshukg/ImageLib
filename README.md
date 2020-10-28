@@ -1,7 +1,7 @@
 # ImageLib
-Architecture: Clean+MVVM
-Dependency Injection: Dagger2
-Network : Retorfit
-Utils: guava
-Image Loading : glide
-Image Caching : glide:recyclerview-integration
+Architecture: Clean+MVVM <br />
+Dependency Injection: Dagger2 <br />
+Network : Retorfit<br />
+Utils: guava<br />
+Image Loading : glide<br />
+Image Caching : glide:recyclerview-integration<br />
