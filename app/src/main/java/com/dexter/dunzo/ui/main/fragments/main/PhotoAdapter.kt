@@ -34,4 +34,11 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoViewHolder>() {
         // assuming id unique for all
         return photos[position].id.toLong()
     }
+
+    fun getItemAt(position: Int): LocalPhoto? {
+        if(photos.size>position){
+            return photos[position]
+        }
+        return  null;
+    }
 }

@@ -9,9 +9,15 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.ListPreloader.PreloadModelProvider
+import com.bumptech.glide.ListPreloader.PreloadSizeProvider
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.dexter.dunzo.R
-import com.dexter.dunzo.ui.main.utilities.Const
+import com.dexter.dunzo.ui.main.MyPreloadModelProvider
 import com.dexter.dunzo.ui.main.base.BaseFragment
+import com.dexter.dunzo.ui.main.fragments.main.model.LocalPhoto
+import com.dexter.dunzo.ui.main.utilities.Const
 import javax.inject.Inject
 
 
@@ -22,7 +28,8 @@ class MainFragment : BaseFragment() {
             MainFragment()
     }
 
-    private lateinit var model: MainModel
+    @Inject
+    lateinit var model: MainModel
     private lateinit var rycView: RecyclerView
     private lateinit var adapter: PhotoAdapter
 
@@ -38,12 +45,19 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        rycView = view.findViewById(R.id.ryc_view)
+        val sizeProvider: PreloadSizeProvider<LocalPhoto> =
+            ViewPreloadSizeProvider<LocalPhoto>()
+        val modelProvider: PreloadModelProvider<LocalPhoto> = MyPreloadModelProvider(rycView, this)
+        val preloader: RecyclerViewPreloader<LocalPhoto> =
+            RecyclerViewPreloader<LocalPhoto>(requireActivity(), modelProvider, sizeProvider, 10)
         adapter = PhotoAdapter()
         adapter.setHasStableIds(true)
-        rycView = view.findViewById<RecyclerView>(R.id.ryc_view)
-        rycView.setItemViewCacheSize(3)
+        rycView.setItemViewCacheSize(10)
         rycView.adapter = adapter
         val layoutManager = rycView.layoutManager!! as LinearLayoutManager
+        layoutManager.isItemPrefetchEnabled = true
+        rycView.addOnScrollListener(preloader)
         rycView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val visibleItemCount: Int = layoutManager.childCount
@@ -51,7 +65,7 @@ class MainFragment : BaseFragment() {
                 val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
                 model.let {
                     if (!it.isLoading && !it.isLastPage) {
-                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount- Const.PRECACHE_SIZE
+                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - Const.PRECACHE_SIZE
                             && firstVisibleItemPosition >= 0
                             && totalItemCount >= Const.PAGE_SIZE
                         ) {
@@ -61,7 +75,7 @@ class MainFragment : BaseFragment() {
                 }
             }
         })
-        viewModel._list.observe(viewLifecycleOwner, Observer { it    ->
+        viewModel._list.observe(viewLifecycleOwner, Observer { it ->
             this.model = it
             adapter.setPhotos(model.itemsList)
             adapter.notifyDataSetChanged()
@@ -77,3 +91,4 @@ class MainFragment : BaseFragment() {
         viewModel.continueFetch()
     }
 }
+
