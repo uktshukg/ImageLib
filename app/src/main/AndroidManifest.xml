@@ -11,8 +11,7 @@
         android:supportsRtl="true"
         android:name=".ui.main.App"
         android:theme="@style/Theme.Dunzo">
-        <activity android:name=".ui.main.activities.main.MainActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".ui.main.activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
